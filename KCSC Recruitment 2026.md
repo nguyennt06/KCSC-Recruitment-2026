@@ -1,8 +1,4 @@
----
-title: KCSC Recruitment 2026
-tag: onboarding 
 
----
 # WEB
 ## Santa's Shop
 ![image](https://hackmd.io/_uploads/SkgODOhGZe.png)
